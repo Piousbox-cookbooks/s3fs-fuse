@@ -16,11 +16,11 @@ when 'debian'
   %w(
     build-essential
     libfuse-dev
-    fuse-utils
     libcurl4-openssl-dev
     libxml2-dev
     mime-support
   )
+  # fuse-utils
 when 'rhel'
   %w(
     gcc
