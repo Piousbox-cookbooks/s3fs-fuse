@@ -1,6 +1,8 @@
 S3FS-FUSE
 =========
 
+recipe test.rb will probably never be used? _vp_ 20150603
+
 Provides S3FS-FUSE with optional mount monitoring via bluepill.
 
 Usage

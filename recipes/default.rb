@@ -29,6 +29,29 @@ mounted_directories.each do |mount_point|
   end
 end
 
+# before(:all)
+# configure Nedge
+# create these buckets in the cluster
+mounted_directories.each do |mount_point|
+  execute "create bucket #{mount_point[:bucket]} in Nedge" do
+    command "curl #{node[:s3fs_fuse][:s3_ip]}:8080/clusters/cltest/tenants/test/buckets -X POST -d bucketName=#{mount_point[:bucket]} -H \"Authorization: Basic bmV4ZW50YTpuZXhlbnRh\""
+  end
+end
+
+execute "set the domain of ccowgws3subdomains" do
+  command "curl #{node[:s3fs_fuse][:s3_ip]}:8080/sysconfig/ccowgws3subdomains/domain -X PUT -d value=#{node[:s3fs_fuse][:s3_domain]} -H \"Authorization: Basic bmV4ZW50YTpuZXhlbnRh\""
+end
+
+execute "set the port of ccowgws3subdomains" do
+  command "curl #{node[:s3fs_fuse][:s3_ip]}:8080/sysconfig/ccowgws3subdomains/port -X PUT -d value=#{node[:s3fs_fuse][:s3_port]} -H \"Authorization: Basic bmV4ZW50YTpuZXhlbnRh\""
+end
+
+execute "restart ccowgws3subdomains" do
+  command "curl #{node[:s3fs_fuse][:s3_ip]}:8080/procman/workers/ccowgws3subdomains/restart -X GET -H \"Authorization: Basic bmV4ZW50YTpuZXhlbnRh\""
+end
+
+
+
 include_recipe "s3fs-fuse::install"
 
 # edit /etc/hosts file
