@@ -11,12 +11,12 @@ template '/etc/passwd-s3fs' do
   mode 0600
 end
 
+# additionally, package fuse-utils is obsolete so I don't install it?
 prereqs = case node.platform_family
 when 'debian'
   %w(
     build-essential
     libfuse-dev
-    fuse-utils
     libcurl4-openssl-dev
     libxml2-dev
     mime-support
