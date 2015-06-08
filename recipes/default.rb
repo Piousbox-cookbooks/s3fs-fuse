@@ -3,6 +3,12 @@
 # Recipe:: default
 #
 
+if 'ubuntu' == node['platform']
+  execute 'system update' do
+    command 'apt-get update -y'
+  end
+end
+
 mounted_directories = node[:s3fs_fuse][:mounts]
 if(mounted_directories.is_a?(Hash) || !mounted_directories.respond_to?(:each))
   mounted_directories = [node[:s3fs_fuse][:mounts]].compact
