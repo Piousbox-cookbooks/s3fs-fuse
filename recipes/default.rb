@@ -29,13 +29,20 @@ mounted_directories.each do |mount_point|
   end
 end
 
+#
 # before(:all)
 # configure Nedge
+#
+
 # create these buckets in the cluster
 mounted_directories.each do |mount_point|
   execute "create bucket #{mount_point[:bucket]} in Nedge" do
     command "curl #{node[:s3fs_fuse][:s3_ip]}:8080/clusters/cltest/tenants/test/buckets -X POST -d bucketName=#{mount_point[:bucket]} -H \"Authorization: Basic bmV4ZW50YTpuZXhlbnRh\""
   end
+end
+
+execute "turn on worker ccowgws3subdomains" do
+  command "curl #{node[:s3fs_fuse][:s3_ip]}:8080/sysconfig/ccowgws3subdomains/domain -X PUT -d value=#{node[:s3fs_fuse][:s3_domain]} -H \"Authorization: Basic bmV4ZW50YTpuZXhlbnRh\""
 end
 
 execute "set the domain of ccowgws3subdomains" do
@@ -84,3 +91,8 @@ else
     end
   end
 end
+
+#
+# write the spec config
+#
+# @TODO HEREHERE
